@@ -1,34 +1,84 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { createContainer } from 'meteor/react-meteor-data';
+import { Questions } from '../api/questions.js';
 
-import Task from './Task.jsx';
+
+import Question from './Question.jsx';
+import Header from './Header.jsx';
+import Footer from './Footer.jsx';
 
 // App component - represents the whole app
 export default class App extends Component {
-  getTasks() {
-    return [
-      { _id: 1, text: 'This is task 1' },
-      { _id: 2, text: 'This is task 2' },
-      { _id: 3, text: 'This is task 3' },
-    ];
+
+  handleSubmit(event) {
+    event.preventDefault();
+    // Find the text field via the React ref
+    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+
+    Questions.insert({
+      text,
+      createdAt: new Date(), // current time
+    });
+
+    // Clear form
+    ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
 
-  renderTasks() {
-    return this.getTasks().map((task) => (
-      <Task key={task._id} task={task} />
+  renderQuestions() {
+    return this.props.questions.map((question) => (
+      <Question key={question._id} question={question} />
     ));
   }
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Todo List</h1>
-        </header>
+      <div>
+        <Header />
 
-        <ul>
-          {this.renderTasks()}
-        </ul>
+        <div className="section no-pad-bot" id="index-banner">
+          <div className="container">
+            <br/><br/>
+            <h1 className="header center orange-text">Questions?</h1>
+
+            <div className="container">
+              <div className="well">
+                <div className="form-group">
+                  <form className="new-question" onSubmit={this.handleSubmit.bind(this)} >
+                    <input
+                      className="form-control"
+                      type="text"
+                      ref="textInput"
+                      placeholder="Adicione uma pergunta"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div className="row center">
+              <ul>
+                {this.renderQuestions()}
+              </ul>
+            </div>
+            <div className="row center">
+              <a href="http://materializecss.com/getting-started.html" id="download-button" className="btn-large waves-effect waves-light orange">Get Started</a>
+            </div>
+            <br/><br/>
+          </div>
+        </div>
+        <Footer />
       </div>
+
     );
   }
 }
+
+App.propTypes = {
+  questions: PropTypes.array.isRequired,
+};
+
+export default createContainer(() => {
+  return {
+    questions: Questions.find({}).fetch(),
+  };
+}, App);
