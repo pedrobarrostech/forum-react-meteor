@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-
 import { createContainer } from 'meteor/react-meteor-data';
-
 import { Questions, QuestionComments } from '../api/questions.js';
 
-// App component - represents the whole app
 class QuestionPage extends Component {
 
   handleSubmit(event) {

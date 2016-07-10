@@ -5,16 +5,10 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Questions } from '../api/questions.js';
 import QuestionItem from './QuestionItem.jsx';
+import QuestionForm from './QuestionForm.jsx';
 import Footer from './Footer.jsx';
 
 class QuestionsList extends Component {
-
-  handleSubmit(event) {
-    event.preventDefault();
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-    Meteor.call("questions.create", text);
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
-  }
 
   handleLike(questionId) {
     Meteor.call("questions.like", questionId);
@@ -44,7 +38,7 @@ class QuestionsList extends Component {
 
   renderLoading() {
     return (
-      <div>Carregando</div>
+      <div>Loading ...</div>
     )
   }
 
@@ -54,15 +48,34 @@ class QuestionsList extends Component {
     }
     return (
       <div>
-        <h3> Open Questions </h3>
-        <ul className="list-group">
+        <h5>Open Questions</h5>
+        <table className="centered">
+          <thead>
+            <tr>
+                <th data-field="id">Name</th>
+                <th data-field="name">Likes</th>
+                <th data-field="price">Solved?</th>
+            </tr>
+          </thead>
+          <tbody>
           {this.renderQuestions()}
-        </ul>
+          </tbody>
+        </table>
 
-        <h3> Closed Questions </h3>
-        <ul className="list-group">
+        <h5>Closed Questions</h5>
+        <table className="centered">
+          <thead>
+            <tr>
+                <th data-field="id">Name</th>
+                <th data-field="name">Likes</th>
+                <th data-field="price">Solved?</th>
+            </tr>
+          </thead>
+          <tbody>
           {this.renderSolvedQuestions()}
-        </ul>
+          </tbody>
+        </table>
+
       </div>
     );
   }
@@ -72,30 +85,15 @@ class QuestionsList extends Component {
       <div>
         <div className="section no-pad-bot" id="index-banner">
           <div className="container">
-            <br/><br/>
             <h1 className="header center orange-text">Questions?</h1>
-
-            <div className="container">
-              <div className="well">
-                <div className="form-group">
-                  <form className="new-question" onSubmit={this.handleSubmit.bind(this)} >
-                    <input
-                      className="form-control"
-                      type="text"
-                      ref="textInput"
-                      placeholder="Adicione uma pergunta"
-                    />
-                  </form>
-                </div>
-              </div>
-            </div>
-            { this.renderList()}
-
-            <br/><br/>
-          </div>
+            <QuestionForm placeholderName="Add a question ..."
+              repository="questions.create" formName="new-question"/>
+           {this.renderList()}
+          <br/><br/>
         </div>
-        <Footer />
       </div>
+      <Footer />
+    </div>
     );
   }
 }
