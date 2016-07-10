@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Questions, QuestionComments } from '../api/questions.js';
 import Loading from './Loading.jsx';
+import Comment from './Comment.jsx';
 
 class QuestionPage extends Component {
 
@@ -15,7 +16,7 @@ class QuestionPage extends Component {
 
   renderComments() {
     return this.props.comments.map((comment) => (
-      <p key={comment._id}>{comment.text}</p>
+      <Comment key={comment._id} text={comment.text} />
     ))
   }
 
