@@ -39,8 +39,11 @@ class QuestionPage extends Component {
                 type="text"
                 ref="textInput"
                 placeholder="Adicione um comentário"
+                required
               />
-              <button className="btn btn-default" type="submit">Enviar</button>
+              <button className="btn-floating btn-large waves-effect waves-light red" type="submit">
+                <i className="material-icons">add</i>
+              </button>
             </form>
           </div>
         </div>

@@ -22,6 +22,7 @@ export default class QuestionsForm extends Component {
               type="text"
               ref="textInput"
               placeholder={this.props.placeholderName}
+              required
             />
           </form>
         </div>
