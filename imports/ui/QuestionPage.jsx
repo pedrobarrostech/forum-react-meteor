@@ -29,7 +29,8 @@ class QuestionPage extends Component {
         <div className="container">
           <h4>{this.props.question.text}</h4>
           <p>{moment(this.props.question.createdAt).fromNow()}</p>
-          <h3>Comentários:</h3>
+          <br />
+          <h5>Comments</h5>
           <div className="form-group">
             {this.renderComments()}
             <form className="new-comment" onSubmit={this.handleSubmit.bind(this)} >
