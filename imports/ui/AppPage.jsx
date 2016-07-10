@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import Header from './Header.jsx';
+import Header from './HeaderComponent.jsx';
 
 // App component - represents the whole app
-export default class App extends Component {
+export default class AppPage extends Component {
 
   render() {
     return (

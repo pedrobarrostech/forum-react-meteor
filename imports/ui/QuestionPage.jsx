@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Questions, QuestionComments } from '../api/questions.js';
-import Loading from './Loading.jsx';
-import Comment from './Comment.jsx';
+import Loading from './LoadingComponent.jsx';
+import Comment from './CommentComponent.jsx';
 
 class QuestionPage extends Component {
 
@@ -16,8 +16,11 @@ class QuestionPage extends Component {
 
   renderComments() {
     return this.props.comments.map((comment) => (
-      <Comment key={comment._id} text={comment.text} />
-    ))
+      <Comment
+        key={comment._id}
+        text={comment.text}
+      />
+    ));
   }
 
   render() {
@@ -53,12 +56,12 @@ class QuestionPage extends Component {
 }
 
 export default createContainer(
-  ( { params, location } ) => {
+  ({ params }) => {
     const questionsSubscription = Meteor.subscribe("question", params.questionId)
     return {
       loading: !questionsSubscription.ready(),
-      question: Questions.findOne({_id: params.questionId}),
-      comments: QuestionComments.find({questionId: params.questionId}, {sort: {createdAt: 1}}).fetch()
+      question: Questions.findOne({ _id: params.questionId }),
+      comments: QuestionComments.find({ questionId: params.questionId },
+        { sort: { createdAt: 1 } }).fetch()
     };
-  },
-  QuestionPage);
+  }, QuestionPage);

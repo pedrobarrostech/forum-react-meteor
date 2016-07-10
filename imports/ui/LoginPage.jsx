@@ -1,43 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Loading from './Loading.jsx';
-export default class LoginPage extends Component {
+import { createContainer } from 'meteor/react-meteor-data';
+import { browserHistory } from 'react-router';
+import LoginForm from './LoginFormComponent';
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-    Meteor.call("questions.comment", this.props.question._id, text);
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
-  }
-  render() {
-    if (this.props.loading) {
-      return (<Loading />);
+class LoginPage extends Component {
+
+  componentDidMount() {
+    if (this.props.user) {
+      browserHistory.push('/');
     }
+  }
+
+  componentDidUpdate() {
+    if (this.props.user) {
+      browserHistory.push('/');
+    }
+  }
+
+  render() {
     return (
-      <div>
-        <div className="container">
-          <h4>Login</h4>
-
-          <div className="form-group">
-            <form className="new-comment" onSubmit={this.handleSubmit.bind(this)} >
-              <input
-                className="form-control"
-                type="text"
-                ref="emailInput"
-                placeholder="Login"
-              />
-
-              <input
-                className="form-control"
-                type="password"
-                ref="passwordInput"
-                placeholder="********"
-              />
-              <button className="btn btn-default" type="submit">Enviar</button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <LoginForm />
     );
   }
-};
+}
+
+export default createContainer(({ params, location }) => {
+  return {
+    user: Meteor.user(),
+  };
+}, LoginPage);

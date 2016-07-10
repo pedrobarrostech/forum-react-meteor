@@ -16,33 +16,37 @@ Questions.allow({
 });
 
 Meteor.methods({
-  "questions.like": function(questionId) {
-    Questions.update({_id: questionId}, {
+  'questions.create': function(text) {
+    if (!this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+    Questions.insert({
+      text,
+      userId: this.userId,
+      createdAt: new Date(), // current time
+    });
+  },
+  'questions.like': function(questionId) {
+    Questions.update({ _id: questionId }, {
       $inc: {
         likes: 1
       }
     });
   },
-  "questions.create": function(text) {
-    Questions.insert({
-      text,
-      createdAt: new Date(), // current time
-    });
-  },
-  "questions.solve": function(questionId) {
-    Questions.update({_id: questionId}, {
+  'questions.solve': function(questionId) {
+    Questions.update({ _id: questionId }, {
       $set: {
         solvedAt: new Date()
       }
     });
   },
-  "questions.comment": function(questionId, text) {
+  'questions.comment': function(questionId, text) {
     QuestionComments.insert({
       questionId,
       text,
       createdAt: new Date(), // current time
     });
-    Questions.update({_id: questionId}, {
+    Questions.update({ _id: questionId }, {
       $inc: {
         commentsCount: 1
       }
@@ -54,28 +58,44 @@ Meteor.methods({
 });
 
 if (Meteor.isServer) {
-  Meteor.publish("questions", function () {
-    return Questions.find({}, {
-      fields: {
-        text: 1,
-        likes: 1,
-        commentsCount: 1,
-        solvedAt: 1
-      }
-    });
-  });
-  Meteor.publishComposite("question", function (questionId) {
+  Meteor.publishComposite('questions', function () {
     return {
       find: function() {
-        return Questions.find({_id: questionId}, {});
+        return Questions.find({}, {
+          fields: {
+            userId: 1,
+            text: 1,
+            likes: 1,
+            commentsCount: 1,
+            solvedAt: 1
+          }
+        });
       },
       children: [
         {
           find: function(question) {
-            return QuestionComments.find({questionId: question._id}, {});
+            return Meteor.users.find({ _id: question.userId }, {
+              fields: {
+                profile: 1
+              }
+            });
           }
         }
       ]
-    }
+    };
+  });
+  Meteor.publishComposite('question', function (questionId) {
+    return {
+      find: function() {
+        return Questions.find({ _id: questionId }, {});
+      },
+      children: [
+        {
+          find: function(question) {
+            return QuestionComments.find({ questionId: question._id }, {});
+          }
+        }
+      ]
+    };
   });
 }
