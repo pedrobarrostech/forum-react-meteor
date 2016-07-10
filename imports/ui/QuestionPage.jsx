@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Questions, QuestionComments } from '../api/questions.js';
+import Loading from './Loading.jsx';
 
 class QuestionPage extends Component {
 
@@ -20,7 +21,7 @@ class QuestionPage extends Component {
 
   render() {
     if (this.props.loading) {
-      return (<div>Carregando...</div>);
+      return (<Loading />);
     }
     return (
       <div>

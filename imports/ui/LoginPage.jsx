@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-
+import Loading from './Loading.jsx';
 export default class LoginPage extends Component {
 
   handleSubmit(event) {
@@ -11,7 +11,7 @@ export default class LoginPage extends Component {
   }
   render() {
     if (this.props.loading) {
-      return (<div>Carregando...</div>);
+      return (<Loading />);
     }
     return (
       <div>

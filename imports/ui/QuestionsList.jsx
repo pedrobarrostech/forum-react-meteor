@@ -6,6 +6,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { Questions } from '../api/questions.js';
 import QuestionItem from './QuestionItem.jsx';
 import QuestionForm from './QuestionForm.jsx';
+import Loading from './Loading.jsx';
 import Footer from './Footer.jsx';
 
 class QuestionsList extends Component {
@@ -38,7 +39,7 @@ class QuestionsList extends Component {
 
   renderLoading() {
     return (
-      <div>Loading ...</div>
+      <Loading />
     )
   }
 
@@ -104,7 +105,6 @@ QuestionsList.propTypes = {
 
 };
 
-
 /*
 export default class Container extends Component {
   render(){
@@ -119,8 +119,6 @@ export default class Container extends Component {
     )
   }
 }
-
-
 */
 export default createContainer(() => {
   const questionsSubscriton = Meteor.subscribe("questions");
