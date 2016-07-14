@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-export default class NotFoundPage extends Component {
+import Header from './HeaderComponent';
+
+class NotFoundPage extends Component {
 
   render() {
     return (
@@ -10,3 +12,5 @@ export default class NotFoundPage extends Component {
     );
   }
 }
+
+export default NotFoundPage;

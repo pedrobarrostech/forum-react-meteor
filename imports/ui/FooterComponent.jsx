@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Link } from 'react-router';
 
-export default class FooterComponent extends Component {
+const propTypes = {
+  handleLogout: PropTypes.func,
+  renderLogout: PropTypes.func,
+  user: PropTypes.object
+};
+
+const params = () => ({
+  user: Meteor.user()
+});
+
+class FooterComponent extends Component {
   handleLogout(event) {
     event.preventDefault();
     Accounts.logout();
@@ -53,10 +63,7 @@ export default class FooterComponent extends Component {
   }
 }
 
+FooterComponent.propTypes = propTypes;
 
-export default createContainer(
-  ({ params, location }) => {
-    return {
-      user: Meteor.user(),
-    };
-  }, FooterComponent);
+export default FooterComponent;
+export default createContainer(params, FooterComponent);

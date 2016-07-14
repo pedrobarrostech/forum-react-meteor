@@ -1,15 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Questions } from '../api/questions.js';
-import QuestionItem from './QuestionItemComponent.jsx';
-import QuestionForm from './QuestionFormComponent.jsx';
-import Loading from './LoadingComponent.jsx';
-import Footer from './FooterComponent.jsx';
+import { Questions } from '../api/questions';
+import QuestionItem from './QuestionItemComponent';
+import QuestionForm from './QuestionFormComponent';
+import Loading from './LoadingComponent';
+import Footer from './FooterComponent';
+
+const questionsSubscription = Meteor.subscribe('questions');
+const propTypes = {
+  user: PropTypes.object,
+  solvedQuestions: PropTypes.array,
+  openQuestions: PropTypes.array,
+  handleLike: PropTypes.func,
+  handleSolve: PropTypes.func,
+  renderSolvedQuestions: PropTypes.func,
+  renderQuestions: PropTypes.func,
+  renderLoading: PropTypes.func,
+  renderList: PropTypes.func
+};
+
+const params = () => ({
+  user: Meteor.user(),
+  openQuestions: Questions.find({ solvedAt: null }, { sort: { likes: -1 } }).fetch(),
+  solvedQuestions: Questions.find({ solvedAt: { $ne: null } }, { sort: { likes: -1 } }).fetch(),
+  users: Meteor.users.find().fetch(),
+  loading: !questionsSubscription.ready()
+});
+
 
 class QuestionsListPage extends Component {
-
-
   componentDidMount() {
     if (!this.props.user) {
       browserHistory.push('/login');
@@ -126,36 +146,8 @@ class QuestionsListPage extends Component {
     );
   }
 }
-/*
-QuestionsListPage.propTypes = {
-  solvedQuestions: PropTypes.array.isRequired,
-  openQuestions: PropTypes.array.isRequired
 
-};
+QuestionsListPage.propTypes = propTypes;
 
-
-export default class Container extends Component {
-  render(){
-    const questionsSubscriton = Meteor.subscribe('questions');
-    data = {
-      questions: Questions.find({},  {sort: {likes: -1 }}).fetch(),
-      loading: !questionsSubscriton.ready()
-    }
-
-    return (
-      <QuestionsListPage questions={data.questions} loading={data.loading} />
-    )
-  }
-}
-*/
-export default createContainer(
-  () => {
-    const questionsSubscription = Meteor.subscribe('questions');
-    return {
-      user: Meteor.user(),
-      openQuestions: Questions.find({ solvedAt: null }, { sort: { likes: -1 } }).fetch(),
-      solvedQuestions: Questions.find({ solvedAt: { $ne: null } }, { sort: { likes: -1 } }).fetch(),
-      users: Meteor.users.find().fetch(),
-      loading: !questionsSubscription.ready()
-    };
-  }, QuestionsListPage);
+export default QuestionsListPage;
+export default createContainer(params, QuestionsListPage);

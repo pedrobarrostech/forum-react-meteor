@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 
-export default class SignUpFormComponent extends Component {
+const propTypes = {
+  handleSubmit: PropTypes.func
+};
+
+class SignUpFormComponent extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
     const email = ReactDOM.findDOMNode(this.refs.emailInput).value.trim();
     const name = ReactDOM.findDOMNode(this.refs.nameInput).value.trim();
     const password = ReactDOM.findDOMNode(this.refs.passwordInput).value.trim();
-
     const profile = {
       name
     };
@@ -64,3 +67,7 @@ export default class SignUpFormComponent extends Component {
     );
   }
 }
+
+SignUpFormComponent.propTypes = propTypes;
+
+export default SignUpFormComponent;

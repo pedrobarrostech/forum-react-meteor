@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-export default class QuestionsFormComponent extends Component {
+const propTypes = {
+  handleSubmit: PropTypes.func
+};
+
+class QuestionsFormComponent extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
@@ -26,3 +30,7 @@ export default class QuestionsFormComponent extends Component {
     );
   }
 }
+
+QuestionsFormComponent.propTypes = propTypes;
+
+export default QuestionsFormComponent;

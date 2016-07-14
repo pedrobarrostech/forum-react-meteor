@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Link } from 'react-router';
 
-export default class HeaderComponent extends Component {
+const propTypes = {
+  handleLogout: PropTypes.func,
+  renderLogout: PropTypes.func,
+  user: PropTypes.object
+};
+
+const params = () => ({
+  user: Meteor.user()
+});
+
+class HeaderComponent extends Component {
   handleLogout(event) {
     event.preventDefault();
     Accounts.logout();
@@ -31,9 +41,7 @@ export default class HeaderComponent extends Component {
   }
 }
 
-export default createContainer(
-  ({ params, location }) => {
-    return {
-      user: Meteor.user(),
-    };
-  }, HeaderComponent);
+HeaderComponent.propTypes = propTypes;
+
+export default HeaderComponent;
+export default createContainer(params, HeaderComponent);

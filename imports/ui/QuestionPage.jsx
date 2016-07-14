@@ -1,9 +1,25 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Questions, QuestionComments } from '../api/questions.js';
-import Loading from './LoadingComponent.jsx';
-import Comment from './CommentComponent.jsx';
+import { Questions, QuestionComments } from '../api/questions';
+import Loading from './LoadingComponent';
+import Comment from './CommentComponent';
+
+const propTypes = {
+  question: PropTypes.object,
+  renderComments: PropTypes.func,
+  handleSubmit: PropTypes.func
+};
+
+const paramsContainer = ({ params }) => {
+  const questionsSubscription = Meteor.subscribe("question", params.questionId);
+  return {
+    loading: !questionsSubscription.ready(),
+    question: Questions.findOne({ _id: params.questionId }),
+    comments: QuestionComments.find({ questionId: params.questionId },
+      { sort: { createdAt: 1 } }).fetch()
+  };
+}
 
 class QuestionPage extends Component {
 
@@ -55,13 +71,6 @@ class QuestionPage extends Component {
   }
 }
 
-export default createContainer(
-  ({ params }) => {
-    const questionsSubscription = Meteor.subscribe("question", params.questionId)
-    return {
-      loading: !questionsSubscription.ready(),
-      question: Questions.findOne({ _id: params.questionId }),
-      comments: QuestionComments.find({ questionId: params.questionId },
-        { sort: { createdAt: 1 } }).fetch()
-    };
-  }, QuestionPage);
+QuestionPage.propTypes = propTypes;
+
+export default createContainer(paramsContainer, QuestionPage);

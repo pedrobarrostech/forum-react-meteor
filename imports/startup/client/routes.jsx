@@ -1,15 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import AppPage from '../../ui/AppPage.jsx';
-import LoginPage from '../../ui/LoginPage.jsx';
-import SignUpPage from '../../ui/SignUpPage.jsx';
-import NotFoundPage from '../../ui/NotFoundPage.jsx';
-import QuestionsListPage from '../../ui/QuestionsListPage.jsx';
-import QuestionPage from '../../ui/QuestionPage.jsx';
+import AppPage from '../../ui/AppPage';
+import LoginPage from '../../ui/LoginPage';
+import SignUpPage from '../../ui/SignUpPage';
+import NotFoundPage from '../../ui/NotFoundPage';
+import QuestionsListPage from '../../ui/QuestionsListPage';
+import QuestionPage from '../../ui/QuestionPage';
 
 browserHistory.listen(function (location) {
-  console.log("Page: " + location.pathname);
+  console.log('Page: ' + location.pathname);
 });
 
 export const renderRoutes = () => (

@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { createContainer } from 'meteor/react-meteor-data';
-import { Questions } from '../api/questions.js';
 
-export default class CommentForm extends Component {
+const propTypes = {
+  formName: PropTypes.string.isRequired,
+  placeholderName: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired
+};
+
+class CommentForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
@@ -14,17 +18,24 @@ export default class CommentForm extends Component {
 
   render() {
     return (
-        <div className="form-group">
-          <form className={this.props.formName}
-              onSubmit={this.handleSubmit.bind(this)} >
-            <input
-              className="form-control"
-              type="text"
-              ref="textInput"
-              placeholder={this.props.placeholderName}
-            />
-          </form>
-        </div>
+      <div className="form-group">
+        <form
+          className={this.props.formName}
+          onSubmit={this.handleSubmit.bind(this)}
+        >
+          <input
+            className="form-control"
+            type="text"
+            ref="textInput"
+            placeholder={this.props.placeholderName}
+          />
+        </form>
+      </div>
     );
   }
 }
+
+
+CommentForm.propTypes = propTypes;
+
+export default CommentForm;

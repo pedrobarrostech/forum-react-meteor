@@ -1,8 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { browserHistory } from 'react-router';
 import LoginForm from './LoginFormComponent';
+
+const propTypes = {
+  user: PropTypes.object
+};
+
+const params = () => ({
+  user: Meteor.user()
+});
 
 class LoginPage extends Component {
 
@@ -25,8 +32,7 @@ class LoginPage extends Component {
   }
 }
 
-export default createContainer(({ params, location }) => {
-  return {
-    user: Meteor.user(),
-  };
-}, LoginPage);
+LoginPage.propTypes = propTypes;
+
+export default LoginPage;
+export default createContainer(params, LoginPage);

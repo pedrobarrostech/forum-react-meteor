@@ -1,7 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-export default class QuestionItemComponent extends Component {
+const propTypes = {
+  question: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleSolve: PropTypes.func.isRequired
+};
+
+class QuestionItemComponent extends Component {
 
   handleLike(event) {
     event.preventDefault();
@@ -50,9 +56,7 @@ export default class QuestionItemComponent extends Component {
     );
   }
 }
-/*
-QuestionItemComponent.propTypes = {
-  question: PropTypes.object.isRequired,
-  handleLike: PropTypes.object.isRequired,
-  handleSolve: PropTypes.object.isRequired
-};*/
+
+QuestionItemComponent.propTypes = propTypes;
+
+export default QuestionItemComponent;

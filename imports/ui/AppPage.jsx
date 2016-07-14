@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import Header from './HeaderComponent.jsx';
+import React, { Component, PropTypes } from 'react';
+import Header from './HeaderComponent';
 
-// App component - represents the whole app
-export default class AppPage extends Component {
+const propTypes = {
+  children: PropTypes.object.isRequired
+};
 
+class AppPage extends Component {
   render() {
     return (
       <div>
@@ -13,3 +15,7 @@ export default class AppPage extends Component {
     );
   }
 }
+
+AppPage.propTypes = propTypes;
+
+export default AppPage;

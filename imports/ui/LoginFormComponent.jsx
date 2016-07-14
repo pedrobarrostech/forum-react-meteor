@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 
-export default class LoginFormComponent extends Component {
+const propTypes = {
+  handleSubmit: PropTypes.func
+};
+
+class LoginFormComponent extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
@@ -47,3 +51,7 @@ export default class LoginFormComponent extends Component {
     );
   }
 }
+
+LoginFormComponent.propTypes = propTypes;
+
+export default LoginFormComponent;

@@ -2,18 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
-import SignUpForm from './SignUpFormComponent.jsx'
+import SignUpForm from './SignUpFormComponent'
 
-export default class SignUpPage extends Component {
+const propTypes = {
+  user: PropTypes.object
+};
 
-  componentDidUpdate() {
-    if (this.props.user) {
-      browserHistory.push("/");
-    }
-  }
+const params = () => ({
+  user: Meteor.user()
+});
+
+class SignUpPage extends Component {
+
   componentDidMount() {
     if (this.props.user) {
-      browserHistory.push("/");
+      browserHistory.push('/');
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.user) {
+      browserHistory.push('/');
     }
   }
 
@@ -24,9 +32,7 @@ export default class SignUpPage extends Component {
   }
 }
 
-export default createContainer(
-({ params, location }) => {
-  return {
-    user: Meteor.user(),
-  };
-}, SignUpPage);
+SignUpPage.propTypes = propTypes;
+
+export default SignUpPage;
+export default createContainer(params, SignUpPage);
